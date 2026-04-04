@@ -1,0 +1,7 @@
+
+Project/01_provision_infra_with_Terraform/proj-creds.json
+
+**/.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
