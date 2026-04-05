@@ -1,5 +1,5 @@
 
-Project/01_provision_infra_with_Terraform/proj-creds.json
+*/proj-creds.json
 
 **/.terraform/
 *.tfstate
@@ -11,4 +11,5 @@ Project/01_provision_infra_with_Terraform/proj-creds.json
 *.pem
 *.p12
 credentials*
-.env
+.envproj-creds.json
+*.json
