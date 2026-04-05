@@ -19,7 +19,7 @@ variables:
   file: "Crimes_{{inputs.year}}.csv"
   gcs_file: "gs://{{kv('GCP_BUCKET_NAME')}}/{{vars.file}}"
   table: "{{kv('GCP_DATASET')}}.chi_crime_{{inputs.year}}"
-  #data: "{{outputs.extract.outputFiles[vars.file]}}"
+  # data: "{{outputs.extract.outputFiles[vars.file]}}"
 
 tasks:
   - id: set_label
@@ -32,9 +32,9 @@ tasks:
     type: io.kestra.plugin.scripts.shell.Commands
     taskRunner:
       type: io.kestra.plugin.core.runner.Process
+      # warningOnStdErr: false
     commands:
       - wget -qO- https://github.com/joyeli25/DE_Zoomcamp_Project_2025-26/releases/download/crime-data/Crimes_-_{{inputs.year}}_20260330.csv.gz | gunzip > "Crimes_{{inputs.year}}.csv"
-    warningOnStdErr: false
     outputFiles:
       - "*.csv"
 
@@ -142,6 +142,21 @@ tasks:
   - id: purge_files
     type: io.kestra.plugin.core.storage.PurgeCurrentExecutionFiles
     description: To avoid cluttering your storage, we will remove the downloaded files
+
+  - id: cleanup
+    type: io.kestra.plugin.scripts.shell.Commands
+    description: Clean up downloaded files
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+    commands:
+      - rm -f "{{render(vars.file)}}" || true
+
+  - id: send_successs_notification
+    type: io.kestra.plugin.core.log.Log
+    message: |
+      Successfully loaded Chicago Crime data for {{inputs.year}}
+      File: {{render(vars.file)}}
+      Table: {{render(vars.table)}}
 
 pluginDefaults:
   - type: io.kestra.plugin.gcp
