@@ -5,3 +5,10 @@ Project/01_provision_infra_with_Terraform/proj-creds.json
 *.tfstate
 *.tfstate.*
 .terraform.lock.hcl
+
+*.json
+*.key
+*.pem
+*.p12
+credentials*
+.env
