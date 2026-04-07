@@ -48,7 +48,7 @@ tasks:
           dev:
             type: bigquery
             dataset: chi_crime_dataset
-            project: chi-crime-project
+            project: chi-crime-project-491821
             keyfile: sa.json
             method: service-account
             location: US
