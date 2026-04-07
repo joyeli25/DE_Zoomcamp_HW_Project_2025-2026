@@ -16,8 +16,8 @@ tasks:
     type: io.kestra.plugin.scripts.shell.Commands
     commands:
       - echo "Cleaning workspace before sync..."
-      - rm -rf Project/dbt_data_transformation/chi_crime_project/* 2>/dev/null || true
-      - rm -rf Project/dbt_data_transformation/chi_crime_project/.* 2>/dev/null || true
+      - rm -rf Project/03_dbt_Data_Transformation/chi_crime_project/* 2>/dev/null || true
+      - rm -rf Project/03_dbt_Data_Transformation/chi_crime_project/.* 2>/dev/null || true
 
   - id: clone_repo
     type: io.kestra.plugin.git.Clone
@@ -28,7 +28,7 @@ tasks:
     type: io.kestra.plugin.dbt.cli.DbtCLI
     projectDir: "Project/03_dbt_Data_Transformation/chi_crime_project"
     env:
-      DBT_DATABASE: chi-crime-project
+      DBT_DATABASE: chi-crime-project-491821
       DBT_SCHEMA: chi_crime_dataset
     namespaceFiles:
       enabled: true
