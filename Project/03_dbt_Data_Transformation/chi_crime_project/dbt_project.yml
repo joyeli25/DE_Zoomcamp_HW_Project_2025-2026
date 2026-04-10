@@ -7,7 +7,8 @@ version: '1.0.0'
 config-version: 2
 
 # This setting configures which "profile" dbt uses for this project.
-profile: 'chi-crime-project-491821'
+profile: 'default'
+# 'chi-crime-project-491821'
 # profile: 'default' # default profile name, if you haven't changed it
 
 # These configurations specify where dbt should look for different types of files.
