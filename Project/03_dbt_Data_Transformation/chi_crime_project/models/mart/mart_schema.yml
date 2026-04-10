@@ -1,0 +1,62 @@
+models:
+  - name: dim_location
+    # description: Location dimension table with location details
+    # columns:
+
+
+  - name: dim_date
+    # description: Date dimension table
+    # columns:
+    #   - name: date_key
+    #     description: Unique identifier for each date
+    #     data_tests:
+    #       - unique
+    #       - not_null
+    #   - name: vendor_name
+    #     description: Company name of the vendor
+
+  - name: dim_offense
+    # description: Dimension table for crime offenses
+    # columns:
+    #   - name: offense_key
+    #     description: Unique identifier for each offense
+    #     data_tests:
+    #       - unique
+    #       - not_null
+    #   - name: iucr
+    #     description: IUCR code for the offense
+    #   - name: primary_type
+    #     description: Primary type of the offense
+    #   - name: description
+    #     description: Description of the offense
+    #   - name: fbi_code
+    #     description: FBI code for the offense
+
+
+  - name: fct_crimes
+    # description: Fact table with all crime incidents including offense and location details
+    # config:
+    #   contract:
+    #     enforced: true
+    # columns:
+    #   - name: crime_id
+    #     description: Unique crime identifier
+    #     data_type: string
+    #     data_tests:
+    #       - unique
+    #       - not_null
+    #   - name: offense_key
+    #     description: Reference to the offense dimension
+    #     data_type: string
+    #     data_tests:
+    #       - not_null
+    #   - name: location_key
+    #     description: Reference to the location dimension
+    #     data_type: string
+    #     data_tests:
+    #       - not_null
+    #   - name: date_key
+    #     description: Reference to the date dimension
+    #     data_type: string
+    #     data_tests:
+    #       - not_null

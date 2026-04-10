@@ -1,6 +1,8 @@
 {{
     config(
-        materialized='view'
+        materialized='view',
+        schema='staging',
+        tags=['staging', 'chi_crime_data_all']
     )
 }}
 
@@ -44,7 +46,7 @@ select
     safe_cast(Latitude as numeric) as latitude,
     safe_cast(Longitude as numeric) as longitude,
     cast(Location as string) as location
-from {{ source('staging','chi_crime_data_all') }}
+from {{ source('raw_crime_data','chi_crime_data_all') }}
 
 
 

@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: raw_crime_data   # Logical name you choose for use inside dbt code 
+    # not creating or referring to a BigQuery dataset/schema
+    # it equals to "chi-crime-project-491821.chi_crime_dataset"
+    database: chi-crime-project-491821  # GCP Project ID that owns the data
+    schema: chi_crime_dataset  # Actual BigQuery dataset name
+
+    tables:
+      - name: chi_crime_data_all   # Table name inside the dataset
+        description: Raw Chicago crime incident records from 2020 to 03/30/2026, including all columns as ingested from the source system. This table may contain duplicates, nulls, or other data quality issues. Use this source for reference or to build staging models that clean and transform the data.
+
+models:
+  - name: stg_chi_crime_all
+    description: Staging model that cleans and transforms the raw crime data, preparing it for use in downstream models. This model performs basic data cleaning such as casting data types, handling nulls, and standardizing column names. Use this model as a base for building dimension and fact tables in the mart layer.

@@ -1,4 +1,8 @@
-{{ config(materialized='table') }}
+{{ config(
+  materialized='table',
+  schema='mart',
+  tags=['mart', 'fact_crimes']
+) }}
 
 select
     {{ dbt_utils.generate_surrogate_key(['id']) }} as crime_id,
@@ -8,7 +12,7 @@ select
     dt.date_key,
     Arrest as arrest,
     Domestic as domestic
-from {{ source('staging', 'chi_crime_data_all') }} s
+from {{ source('raw_crime_data', 'chi_crime_data_all') }} s
 left join {{ ref('dim_offense') }} d
   on {{ dbt_utils.generate_surrogate_key(['s.IUCR', 's.FBI_Code']) }} = d.offense_key
 left join {{ ref('dim_location') }} l

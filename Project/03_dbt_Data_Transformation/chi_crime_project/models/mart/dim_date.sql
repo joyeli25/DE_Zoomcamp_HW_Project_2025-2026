@@ -1,4 +1,8 @@
-{{ config(materialized='table') }}
+{{ config(
+    materialized='table',
+    schema='mart',
+    tags=['mart', 'dim_date']
+) }}
 
 select distinct
     {{ dbt_utils.generate_surrogate_key(['Date']) }} as date_key,
@@ -17,4 +21,4 @@ select distinct
         -- Add more format attempts if needed
         ELSE NULL  -- Or handle invalid dates as needed
     END as updated_on
-from {{ source('staging', 'chi_crime_data_all') }}
+from {{ source('raw_crime_data', 'chi_crime_data_all') }}

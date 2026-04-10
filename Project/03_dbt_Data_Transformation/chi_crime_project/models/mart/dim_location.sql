@@ -1,4 +1,8 @@
-{{ config(materialized='table') }}
+{{ config(
+    materialized='table',
+    schema='mart',
+    tags=['mart', 'dim_location']
+) }}
 
 select distinct
     {{ dbt_utils.generate_surrogate_key(['Block', 'Beat', 'District', 'Ward', '"Community_Area"']) }} as location_key,
@@ -12,4 +16,4 @@ select distinct
     Longitude as longitude,
     X_Coordinate as x_coordinate,
     Y_Coordinate as y_coordinate
-from {{ source('staging', 'chi_crime_data_all') }}
+from {{ source('raw_crime_data', 'chi_crime_data_all') }}
