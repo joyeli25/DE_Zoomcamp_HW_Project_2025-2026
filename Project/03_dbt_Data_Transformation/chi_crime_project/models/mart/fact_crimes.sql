@@ -43,7 +43,5 @@ select
 from {{ source('raw_crime_data', 'chi_crime_data_all') }} s
 left join {{ ref('dim_offense') }} o
   on s.iucr = o.iucr
--- left join {{ ref('dim_location') }} l
---   on {{ dbt_utils.generate_surrogate_key(['s.block', 's.beat', 's.district', 's.ward', 's.community_area']) }} = l.location_key
 left join {{ ref('dim_date') }} dt
   on s.Date = dt.date
