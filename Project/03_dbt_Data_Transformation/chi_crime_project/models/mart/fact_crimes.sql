@@ -44,4 +44,4 @@ from {{ ref('stg_chi_crime_all') }} s
 left join {{ ref('dim_offense') }} o
   on s.iucr = o.iucr
 left join {{ ref('dim_date') }} dt
-  on s.Date = dt.date
+  on s.crime_date = dt.crime_date

@@ -5,7 +5,7 @@
 ) }}
 
 select distinct
-    Date as date,  --"01/07/2026 05:17:00 PM"
+    crime_date,  --"01/07/2026 05:17:00 PM"
     cast(PARSE_TIMESTAMP('%m/%d/%Y %I:%M:%S %p', crime_date) as date) as formatted_date,
     extract(year from PARSE_TIMESTAMP('%m/%d/%Y %I:%M:%S %p', crime_date)) as year,
     extract(month from PARSE_TIMESTAMP('%m/%d/%Y %I:%M:%S %p', crime_date)) as month,
