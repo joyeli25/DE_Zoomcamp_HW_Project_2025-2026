@@ -29,6 +29,7 @@ tasks:
           type: io.kestra.plugin.scripts.runner.docker.Docker
         commands:
           - dbt deps --project-dir Project/03_dbt_Data_Transformation/chi_crime_project
+          - dbt seed --target dev --project-dir Project/03_dbt_Data_Transformation/chi_crime_project
           - dbt run --target dev --project-dir Project/03_dbt_Data_Transformation/chi_crime_project
           - "{{ inputs.dbt_command }} --project-dir Project/03_dbt_Data_Transformation/chi_crime_project"
         profiles: |
