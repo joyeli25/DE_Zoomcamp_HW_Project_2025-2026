@@ -18,9 +18,9 @@ select
 
     s.iucr,
     o.primary_type,
-    o.primary_description,
+    -- o.primary_description,
     o.description,
-    o.secondary_description,
+    -- o.secondary_description,
     o.fbi_code,
     o.index_code,
     o.active,
