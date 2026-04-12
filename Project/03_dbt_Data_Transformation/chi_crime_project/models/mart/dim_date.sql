@@ -10,6 +10,5 @@ select distinct
     extract(year from PARSE_TIMESTAMP('%m/%d/%Y %I:%M:%S %p', Date)) as year,
     extract(month from PARSE_TIMESTAMP('%m/%d/%Y %I:%M:%S %p', Date)) as month,
     extract(day from PARSE_TIMESTAMP('%m/%d/%Y %I:%M:%S %p', Date)) as day,
-    format_date('%A', cast(PARSE_TIMESTAMP('%m/%d/%Y %I:%M:%S %p', Date) as date)) as weekday,
-    cast(PARSE_TIMESTAMP('%m/%d/%Y %I:%M:%S %p', Updated_On) as date) as updated_on
+    format_date('%A', cast(PARSE_TIMESTAMP('%m/%d/%Y %I:%M:%S %p', Date) as date)) as weekday
 from {{ source('raw_crime_data', 'chi_crime_data_all') }}
