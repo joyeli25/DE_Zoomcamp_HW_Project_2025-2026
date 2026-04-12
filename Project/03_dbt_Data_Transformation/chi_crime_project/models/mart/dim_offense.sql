@@ -5,15 +5,15 @@
 ) }}
 
 select distinct
-    c.IUCR as iucr,
-    c.Primary_Type as primary_type,
-    "PRIMARY DESCRIPTION" as primary_description,
-    c.Description as description,
-    "SECONDARY DESCRIPTION" as secondary_description,
-    c.FBI_Code as fbi_code,
-    "INDEX CODE" as index_code,
-    "ACTIVE" as active
-from {{ source('raw_crime_data', 'chi_crime_data_all') }} c
-inner join {{ ref('iucr_code_lookup') }} i
-    on c.IUCR = i.IUCR
+    s.iucr,
+    s.primary_type,
+    i.primary_description,
+    s.description as description,
+    i.secondary_description,
+    s.fbi_code,
+    i.index_code,
+    i.active
+from {{ ref('stg_chi_crime_all') }} s
+inner join {{ ref('dim_iucr') }} i
+    on s.iucr = i.iucr
 

@@ -13,9 +13,6 @@ select
     cast(ID as string) as id,
     cast(Case_Number as string) as case_number,
     
-    -- -- year field
-    -- safe_cast(Year as INT64) as year,
-    
     -- timestamps
     cast(Date as string) as crime_date,
     cast(Updated_On as string) as updated_on,

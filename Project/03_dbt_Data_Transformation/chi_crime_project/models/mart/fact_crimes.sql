@@ -40,7 +40,7 @@ select
     s.latitude,
     s.longitude,
     s.location
-from {{ source('raw_crime_data', 'chi_crime_data_all') }} s
+from {{ ref('stg_chi_crime_all') }} s
 left join {{ ref('dim_offense') }} o
   on s.iucr = o.iucr
 left join {{ ref('dim_date') }} dt
