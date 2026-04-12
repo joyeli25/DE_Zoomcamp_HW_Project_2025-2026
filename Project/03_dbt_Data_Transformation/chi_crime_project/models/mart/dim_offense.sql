@@ -7,9 +7,9 @@
 select distinct
     s.iucr,
     s.primary_type,
-    i.primary_description,
+    -- i.primary_description,
     s.description as description,
-    i.secondary_description,
+    -- i.secondary_description,
     s.fbi_code,
     i.index_code,
     i.active

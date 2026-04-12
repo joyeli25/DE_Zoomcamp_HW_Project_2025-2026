@@ -8,9 +8,9 @@ select
     s.crime_id,
     s.id,
     s.case_number,
-    s.updated_on,	
+    dt.updated_on,	
 
-    s.crime_date,	
+    dt.formatted_date,
     dt.year as crime_year,
     dt.month as crime_month,
     dt.day as crime_day,
