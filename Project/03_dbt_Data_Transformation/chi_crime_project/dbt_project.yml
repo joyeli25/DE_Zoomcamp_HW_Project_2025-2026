@@ -57,3 +57,8 @@ models:
 
       # facts:
       #   +schema: mart
+
+seeds:
+  chi_crime_project:
+    iucr_code_lookup:
+      +schema: seeds  # optional
