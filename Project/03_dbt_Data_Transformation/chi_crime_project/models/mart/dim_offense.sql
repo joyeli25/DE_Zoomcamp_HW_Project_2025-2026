@@ -5,10 +5,15 @@
 ) }}
 
 select distinct
-    {{ dbt_utils.generate_surrogate_key(['IUCR', '"FBI_Code"']) }} as offense_key,
-    IUCR as iucr,
-    Primary_Type as primary_type,
-    "Description" as description,
-    FBI_Code as fbi_code
-from {{ source('raw_crime_data', 'chi_crime_data_all') }}
+    c.IUCR as iucr,
+    c.Primary_Type as primary_type,
+    i.primary_description,
+    c.Description as description,
+    i.secondary_description,
+    c.FBI_Code as fbi_code,
+    i.index_code,
+    i.active
+from {{ source('raw_crime_data', 'chi_crime_data_all') }} c
+inner join {{ ref('iucr_code_lookup') }} i
+    on c.IUCR = i.iucr
 

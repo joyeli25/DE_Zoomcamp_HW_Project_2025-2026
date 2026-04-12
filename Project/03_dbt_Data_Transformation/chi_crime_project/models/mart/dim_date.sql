@@ -5,8 +5,8 @@
 ) }}
 
 select distinct
-    {{ dbt_utils.generate_surrogate_key(['Date']) }} as date_key,
-    cast(PARSE_TIMESTAMP('%m/%d/%Y %I:%M:%S %p', Date) as date) as date,
+    Date as date,  --"01/07/2026 05:17:00 PM"
+    cast(PARSE_TIMESTAMP('%m/%d/%Y %I:%M:%S %p', Date) as date) as formatted_date,
     extract(year from PARSE_TIMESTAMP('%m/%d/%Y %I:%M:%S %p', Date)) as year,
     extract(month from PARSE_TIMESTAMP('%m/%d/%Y %I:%M:%S %p', Date)) as month,
     extract(day from PARSE_TIMESTAMP('%m/%d/%Y %I:%M:%S %p', Date)) as day,

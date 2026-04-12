@@ -1,7 +1,7 @@
 models:
-  - name: dim_location
-    # description: Location dimension table with location details
-    # columns:
+  # - name: dim_location
+  #   # description: Location dimension table with location details
+  #   # columns:
 
 
   - name: dim_date
@@ -32,8 +32,24 @@ models:
     #   - name: fbi_code
     #     description: FBI code for the offense
 
+  - name: dim_iucr
+    # description: Dimension table for IUCR codes with descriptions
+    # columns:
+    #   - name: iucr
+    #     description: Unique identifier for each IUCR code. Illinois Uniform Crime Reporting (IUCR) codes are four digit codes that law enforcement agencies use to classify criminal incidents when taking individual reports. These codes are also used to aggregate types of cases for statistical purposes.
+    #     data_tests:
+    #       - unique
+    #       - not_null
+    #   - name: primary_description
+    #     description: Primary description of the IUCR code
+    #   - name: secondary_description
+    #     description: Secondary description of the IUCR code
+    #   - name: index_code
+    #     description: Index code associated with the IUCR code
+    #   - name: active
+    #     description: Indicates if the IUCR code is active
 
-  - name: fct_crimes
+  - name: fact_crimes
     # description: Fact table with all crime incidents including offense and location details
     # config:
     #   contract:
