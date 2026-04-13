@@ -9,7 +9,9 @@ select distinct
     case when i.primary_description is not null then i.primary_description
          else s.primary_type
     end as primary_type,
-    case when i.secondary_description is not null then i.secondary_description
+    case 
+    when s.iucr="1581" then "NON-CONSENSUAL DISSEMINATION OF PRIVATE SEXUAL IMAGES"
+    when i.secondary_description is not null then i.secondary_description
          else s.description
     end as description,
     s.fbi_code,
