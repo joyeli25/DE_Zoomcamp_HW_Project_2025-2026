@@ -8,9 +8,9 @@ select
     s.crime_id,
     s.id,
     s.case_number,
-    dt.updated_on,	
+    dt.formatted_updated_on as updated_on,
 
-    dt.formatted_date,
+    dt.formatted_crime_date as crime_date,
     dt.year as crime_year,
     dt.month as crime_month,
     dt.day as crime_day,
@@ -18,10 +18,8 @@ select
 
     s.iucr,
     o.primary_type,
-    -- o.primary_description,
     o.description,
-    -- o.secondary_description,
-    o.fbi_code,
+    s.fbi_code,
     o.index_code,
     o.active,
 
