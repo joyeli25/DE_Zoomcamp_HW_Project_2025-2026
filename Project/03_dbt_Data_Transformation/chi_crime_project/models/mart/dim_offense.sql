@@ -17,5 +17,5 @@ select distinct
     i.active
 from {{ ref('stg_chi_crime_all') }} s
 left join {{ ref('dim_iucr') }} i
-    on s.iucr = case when len(i.iucr) = 4 then i.iucr else concat('0', i.iucr) end
+    on s.iucr = case when length(i.iucr) = 4 then i.iucr else concat('0', i.iucr) end
 
