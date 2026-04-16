@@ -28,12 +28,16 @@ services:
       - 9092:9092
       - 28082:28082
       - 29092:29092
+    networks:
+      - flink-network  # Must be on the same network
 
   jobmanager:
     build:
       context: .
       dockerfile: ./Dockerfile.flink
-    image: pyflink-workshop
+    image: flink:1.18-scala_2.12 
+    container_name: flink-jobmanager
+    # pyflink-workshop
     pull_policy: never
     expose:
       - "6123"
@@ -48,9 +52,13 @@ services:
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
         jobmanager.memory.process.size: 1600m
+    networks:
+      - flink-network  # Connect to a defined network
 
   taskmanager:
-    image: pyflink-workshop
+    image: flink:1.18-scala_2.12
+    container_name: flink-taskmanager
+    # pyflink-workshop
     pull_policy: never
     expose:
       - "6121"
@@ -60,7 +68,8 @@ services:
       - ./src/:/opt/src
     depends_on:
       - jobmanager
-    command: taskmanager --taskmanager.registration.timeout 5 min
+    command: taskmanager 
+    # --taskmanager.registration.timeout 5 min
     environment:
       - |
         FLINK_PROPERTIES=
@@ -74,6 +83,8 @@ services:
       resources:
         limits:
           memory: 2G  # Match this closely to taskmanager.memory.process.size
+    networks:
+      - flink-network  # Must be on the same network
 
   postgres:
     image: postgres:18
@@ -84,3 +95,10 @@ services:
       - POSTGRES_PASSWORD=postgres
     ports:
       - "5433:5432"
+    networks:
+      - flink-network  # Must be on the same network
+
+# ... your other services (postgres, redpanda) ...
+networks:
+  flink-network:
+    driver: bridge
