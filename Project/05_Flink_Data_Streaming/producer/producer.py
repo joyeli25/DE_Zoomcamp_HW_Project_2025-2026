@@ -43,7 +43,7 @@ dtypes = {
     'Location': 'object'
 }
 
-df = pd.read_csv(url, names=columns, header=0, dtype=dtypes, low_memory=False).head(1000)
+df = pd.read_csv(url, names=columns, header=0, dtype=dtypes, low_memory=False)
 
 def crime_serializer(crime):
     crime_dict = dataclasses.asdict(crime)
