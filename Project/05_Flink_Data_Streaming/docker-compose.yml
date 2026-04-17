@@ -98,7 +98,6 @@ services:
     networks:
       - flink-network  # Must be on the same network
 
-# ... your other services (postgres, redpanda) ...
 networks:
   flink-network:
     driver: bridge
