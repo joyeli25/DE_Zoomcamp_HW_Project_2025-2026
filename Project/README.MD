@@ -134,6 +134,6 @@ The goal of this project is to build an end-to-end data pipeline on Google Cloud
 3. Run Terraform to provision infrastructure  
 4. Deploy Kestra workflows  
 5. Start Kafka + Flink streaming jobs  
-6. Execute dbt transformations  
+6. Execute dbt transformations in Kestra
 7. Connect Looker Studio to BigQuery  
 8. Explore the **2-tier dashboard**
