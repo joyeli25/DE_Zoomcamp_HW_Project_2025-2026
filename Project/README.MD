@@ -1,78 +1,139 @@
 # Chicago Crime Data Pipeline Project
 
 ## Objective
-The goal of this project is to build an end-to-end data pipeline on Google Cloud Platform (GCP) using infrastructure as code, orchestration, transformation, and visualization tools. The final output is a dashboard with at least two tiles showing categorical and temporal crime data distributions.
+The goal of this project is to build an end-to-end data pipeline on Google Cloud Platform (GCP) using infrastructure as code, orchestration, transformation, and visualization tools. The final output is a **2-tier dashboard** with categorical and temporal crime data distributions, supported by optimized batch and streaming pipelines.
 
 ## Problem Statement
 - **Dataset**: [Chicago Crimes (2001 to present)](https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-Present/ijzp-q8t2/about_data) – reported incidents of crime in Chicago, excluding the most recent seven days.
-- **Data subset used**: Crimes from **January 1, 2020** through **March 30, 2026** (downloaded data by year).
-- **Pipeline type**: Batch (periodic ingestion and processing).
-- **Outcome**: A dashboard with:
-  1. A graph showing distribution of crime types (categorical).
-  2. A graph showing crime trends over time (temporal).
+- **Data scope**: January 1, 2020 – March 30, 2026 (downloaded data by year).
+- **Pipeline type**: 
+  - Batch processing (historical data ingestion)
+  - Streaming processing (real-time crime events)
+- **Goal**:
+  - Efficiently process large-scale crime data
+  - Enable real-time and historical analytics
+  - Deliver insights via a **2-tier BI dashboard**
 
   
 ## Architecture Overview
-1. **Infrastructure provisioning** – Terraform on GCP.
-2. **Orchestration & ingestion** – Kestra ingests data from a GitHub release page.
-3. **Storage** – Google Cloud Storage (data lake).
-4. **Warehouse** – BigQuery.
-5. **Transformation** – dbt (data modeling & preparation).
-6. **Visualization** – Dashboard (e.g., Looker Studio / Streamlit / other BI tool) with two tiles.
-
+1. **Infrastructure** – Provisioned via Terraform on GCP  
+2. **Orchestration** – Kestra workflows with **partition-aware processing**  
+3. **Batch Processing** – Scheduled ingestion and transformation  
+4. **Streaming Processing** – Kafka + Flink for real-time pipelines  
+5. **Storage (Data Lake)** – Google Cloud Storage (GCS)  
+6. **Data Warehouse** – BigQuery with **partitioned and clustered tables**  
+7. **Transformation** – dbt for modeling and aggregation  
+8. **Visualization** – **2-tier dashboard in Google Looker Studio**
 
 ## Technologies Used
 | Component | Technology | Purpose |
-|-----------|------------|---------|
-| Cloud | GCP | Compute & storage |
-| IaC | Terraform | Provision GCP resources |
-| Workflow orchestration | Kestra | Schedule & run batch ingestion to GCS and BigQuery |
-| Data lake | GCS | Raw data storage |
-| Data warehouse | BigQuery | Analytical storage & SQL queries |
-| Transformation | dbt | Data modeling, cleaning, aggregation |
-| Dashboard | *to be specified* | Visualization of two key metrics |
+|----------|-----------|--------|
+| Cloud | GCP | Infrastructure and services |
+| IaC | Terraform | Resource provisioning |
+| Orchestration | Kestra | Workflow orchestration with **partitioning support** |
+| Streaming | Kafka + Flink | Real-time ingestion and processing |
+| Data Lake | GCS | Raw and streaming data storage |
+| Data Warehouse | BigQuery | Optimized analytics storage |
+| Transformation | dbt | Data cleaning and modeling |
+| BI Tool | Looker Studio | **2-tier dashboard visualization** |
 
 
 ## Pipeline Steps
 
 ### 1. Infrastructure (Terraform)
 - Provision GCS bucket (data lake).
-- Create BigQuery dataset and tables.
-- Set up required service accounts and IAM permissions.
+- Create BigQuery datasets and tables with:
+  - **Partitioning** (by `crime_date`)
+  - **Clustering** (by `primary_type`, `crime_date`)
+- Configure service account and access permissions
+- Set up Kafka connectors / Pub/Sub bridge
 
-### 2. Ingestion (Kestra – Batch)
-- **Trigger**: Scheduled (e.g., daily).
-- **Source**: GitHub release page (CSV/Parquet of Chicago crimes data).
-- **Sink**: GCS bucket (raw zone).
-- **Load**: From GCS to BigQuery staging table.
+### 2. Batch Ingestion (Kestra with Partitioning)
 
-### 3. Transformation (dbt)
-- Clean & rename columns.
-- Filter out recent 7 days (per dataset constraints).
-- Create aggregated models:
-  - `crime_counts_by_type` – for categorical chart.
-  - `crime_trends_by_month` – for temporal line chart.
-- Write transformed tables back to BigQuery (analytics schema).
+**Partitioned Orchestration**
 
-### 4. Dashboard
-- Connect BI tool to BigQuery analytics tables.
-- **Tile 1 (Categorical)**: Bar chart – Top 10 crime types by count (2020–Mar 2026).
-- **Tile 2 (Temporal)**: Line chart – Crime count per month from Jan 2020 to Mar 2026.
-- Add titles, axis labels, and a brief description.
+- Implement **partition-aware workflows** in Kestra:
+  - Partition data by `crime_year`
+  - Parallelize ingestion tasks by partition
+- Source: GitHub dataset releases
+- Sink: GCS (raw zone)
+
+**Partitioning Strategy:**
+
+- Load into BigQuery staging tables:
+  - Use **time-based partitioning**
+  - Enable incremental loads
+
+### 3. Streaming Processing (Redpanda/Kafka + Flink)
+
+**Real-Time Pipeline**
+
+- **Redpanda/Kafka**
+  - Acts as the event streaming platform
+  - Ingests real-time crime data (simulated)
+
+- **Flink**
+  - Performs stream processing:
+    - Filtering
+    - Windowed aggregations
+    - Enrichment
+
+- Output:
+  - Write processed streams to:
+    - GCS (streaming zone)
+    - BigQuery (near real-time tables)
+
+### 4. Data Warehouse Optimization (BigQuery)
+
+**Performance Optimization**
+
+- Create **partitioned tables**:
+  - Partition by `crime_date`
+
+- Apply **clustering**:
+  - Columns: `primary_type`, `crime_date`
+
+**Benefits:**
+- Reduced query cost
+- Faster scan performance
+- Improved dashboard responsiveness
+
+### 5. Transformation (dbt)
+
+- Clean and standardize schema
+- Remove invalid or incomplete records
+- Build analytical models:
+  - `fact_chi_crimes`
+- Implement:
+  - Incremental models (aligned with partitions)
+  - Data quality tests
+
+### 6. Visualization (2-Tier Dashboard in Looker Studio)
+
+**Tier 1: Executive Dashboard**
+
+- KPI scorecards:
+  - Total incidents
+  - Arrest rate
+- Time series:
+  - Monthly crime trends
+- Category breakdown:
+  - Top crime types
+
+**Tier 2: Detailed Dashboard**
+
+- Drill-through table:
+  - Individual crime records
+- Filters:
+  - Year, crime type, location
+- Interactive exploration
 
 ## How to Reproduce
-1. Clone the repository.
-2. Set up GCP credentials.
-3. Run Terraform to provision resources.
-4. Deploy Kestra flow (provided in `/kestra` folder).
-5. Run dbt models (commands in `/dbt` folder).
-6. Open the dashboard (link or localhost) to view both tiles.
-
-## Dashboard Preview (Expected)
-- **Tile 1 – Distribution by crime type**: Horizontal bar chart showing `THEFT`, `BATTERY`, `CRIMINAL DAMAGE`, etc.
-- **Tile 2 – Temporal trend**: Line chart from 2001 to present, showing peaks in summer months.
-
-## Future Improvements
-- Add streaming ingestion for real-time crime alerts.
-- Use Terraform modules for reusability.
-- Implement data quality tests in dbt.
+1. Clone repository  
+2. Configure GCP credentials  
+3. Run Terraform to provision infrastructure  
+4. Deploy Kestra workflows  
+5. Start Kafka + Flink streaming jobs  
+6. Execute dbt transformations  
+7. Connect Looker Studio to BigQuery  
+8. Explore the **2-tier dashboard**
