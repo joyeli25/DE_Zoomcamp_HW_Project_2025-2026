@@ -47,3 +47,15 @@ SELECT
   * EXCEPT(Date),
   PARSE_DATE('%m/%d/%Y', SPLIT(Date, ' ')[OFFSET(0)]) AS parsed_date
 FROM `chi-crime-project-491821.chi_crime_dataset.external_chi_crimes`;
+
+
+-- Create a clustered table from external table
+CREATE OR REPLACE TABLE `chi-crime-project-491821.chi_crime_dataset.chi_crimes_clustered`
+PARTITION BY
+  parsed_date
+CLUSTER BY primary_type
+AS
+SELECT 
+  * EXCEPT(Date),
+  PARSE_DATE('%m/%d/%Y', SPLIT(Date, ' ')[OFFSET(0)]) AS parsed_date
+FROM `chi-crime-project-491821.chi_crime_dataset.external_chi_crimes`;
