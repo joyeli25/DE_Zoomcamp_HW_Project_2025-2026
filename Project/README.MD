@@ -78,7 +78,7 @@ The goal of this project is to build an end-to-end data pipeline on Google Cloud
     - Windowed aggregations
     - Enrichment
 
-- Output:
+- **Output**:
   - Write processed streams to:
     - GCS (streaming zone)
     - BigQuery (near real-time tables)
